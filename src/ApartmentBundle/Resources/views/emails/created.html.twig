@@ -1,0 +1,41 @@
+<h3>Your apartment has been submitted!</h3>
+
+<p>You're successfully submitted the apartment.</p>
+
+<table>
+    <tr>
+        <td>Move in</td>
+        <td>{{ apartment.moveInDate | date('m/d/Y') }}</td>
+    </tr>
+    <tr>
+        <td>Street</td>
+        <td>{{ apartment.street }}</td>
+    </tr>
+    <tr>
+        <td>Town</td>
+        <td>{{ apartment.town }}</td>
+    </tr>
+    <tr>
+        <td>Country</td>
+        <td>{{ apartment.country }}</td>
+    </tr>
+    <tr>
+        <td>Postal code</td>
+        <td>{{ apartment.postcode }}</td>
+    </tr>
+    <tr>
+        <td>Contact email</td>
+        <td>{{ apartment.email }}</td>
+    </tr>
+</table>
+
+<ul>
+    <li>Use this link for editing your submission: <a href="{{ url('edit', {'id': apartment.id, 'secret': apartment.securityToken}) }}">
+            {{ url('edit', {'id': apartment.id, 'secret': apartment.securityToken}) }}
+        </a></li>
+    <li>Use this link for deleting your submission: <a href="{{ url('delete', {'id': apartment.id, 'secret': apartment.securityToken}) }}">
+            {{ url('edit', {'id': apartment.id, 'secret': apartment.securityToken}) }}
+        </a></li>
+</ul>
+
+<p>Thanks!</p>

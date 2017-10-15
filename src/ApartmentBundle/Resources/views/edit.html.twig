@@ -1,0 +1,9 @@
+{% extends "ApartmentBundle::base.html.twig" %}
+
+{% block title %}Edit apartment {{ apartment.street }}, {{ apartment.town }}, {{ apartment.country }}{% endblock %}
+
+{% block content %}
+    <h1>Edit apartment {{ apartment.street }}, {{ apartment.town }}, {{ apartment.country }}</h1>
+
+    {{ include("ApartmentBundle:forms:apartment.html.twig", {apartment: apartment}) }}
+{% endblock %}

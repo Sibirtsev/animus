@@ -1,0 +1,36 @@
+{% extends "ApartmentBundle::base.html.twig" %}
+
+{% block title %}Apartment list{% endblock %}
+
+{% block content %}
+    <div class="page-header">
+        <h1>List of apartments</h1>
+    </div>
+    {{ include('ApartmentBundle::flash.html.twig') }}
+    <div class="apartment-list">
+        {% for apartment in apartments %}
+            <div class="apartment-card">
+                <h3><a href="{{ path('view', {'id': apartment.id}) }}">{{ apartment.street }}, {{ apartment.town}}</a></h3>
+                <div class="apartment-details">
+                    <dl class="dl-horizontal">
+                        <dt>Move-in date</dt>
+                        <dd>
+                            <span class="glyphicon glyphicon-calendar"></span>
+                            {{ apartment.moveInDate | date('m/d/Y') }}</dd>
+
+                        <dt>Address</dt>
+                        <dd><a href="https://www.google.com/maps/search/{{ apartment.street }},{{ apartment.town}},{{ apartment.country }},{{ apartment.postcode }}" target="_blank">
+                                <span class="glyphicon glyphicon-map-marker"></span>
+                                {{ apartment.street }}, {{ apartment.town}}, {{ apartment.country }}, {{ apartment.postcode }}
+                            </a></dd>
+                        <dt>Contact email</dt>
+                        <dd><a href="mailto:{{ apartment.email }}">
+                                <span class="glyphicon glyphicon-envelope"></span>
+                                {{ apartment.email }}
+                            </a></dd>
+                    </dl>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

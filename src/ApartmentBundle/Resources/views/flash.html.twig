@@ -1,0 +1,10 @@
+{% for type, flash_messages in app.session.flashBag.all %}
+    {% for flash_message in flash_messages %}
+        {% if (type == 'notice') %}
+            <div class="message bg-success">{{ flash_message }}</div>
+        {%  else %}
+            <div class="message bg-warning">{{ flash_message }}</div>
+        {%  endif  %}
+
+    {% endfor %}
+{% endfor %}
