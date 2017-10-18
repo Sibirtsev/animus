@@ -16,7 +16,9 @@ class ApartmentType extends AbstractType
         ));
     }
 
-
+    /**
+     * {@inheritdoc}
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
@@ -26,7 +28,6 @@ class ApartmentType extends AbstractType
             ->add('country')
             ->add('postCode')
             ->add('email')
-            ->add('save', SubmitType::class)
         ;
     }
 }

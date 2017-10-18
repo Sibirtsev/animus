@@ -18,9 +18,6 @@ class ApartmentRepository extends \Doctrine\ORM\EntityRepository
 
         $q  = $qb->select(['ap'])
             ->from('ApartmentBundle:Apartment', 'ap')
-            ->where(
-                $qb->expr()->eq('ap.status', true)
-            )
             ->orderBy('ap.postedAt', 'DESC')
             ->getQuery();
 

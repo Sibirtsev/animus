@@ -1,0 +1,22 @@
+FOS\ApartmentBundle\Model\Apartment:
+    exclusion_policy: ALL
+    group: apartment
+    properties:
+        id:
+            expose: true
+        move_in_date:
+            expose: true
+        street:
+            expose: true
+        post_code:
+            expose: true
+        town:
+            expose: true
+        country:
+            expose: true
+        email:
+            expose: true
+        posted_at:
+            expose: true
+        edited_at:
+            expose: true

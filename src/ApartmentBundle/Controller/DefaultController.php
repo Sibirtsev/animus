@@ -2,8 +2,7 @@
 
 namespace ApartmentBundle\Controller;
 
-use \Datetime;
-
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
@@ -14,10 +13,18 @@ use Symfony\Component\HttpFoundation\Request;
 use ApartmentBundle\Entity\Apartment;
 use ApartmentBundle\Form\ApartmentType;
 
+/**
+ * Class DefaultController
+ * @Route("/apartment")
+ *
+ * @package ApartmentBundle\Controller
+ */
 class DefaultController extends Controller
 {
     /**
      * @Route("/", name="list")
+     * @Method({"GET"})
+     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function indexAction()
@@ -25,11 +32,15 @@ class DefaultController extends Controller
         $apartmentRepository = $this->getDoctrine()->getRepository(Apartment::class);
         $apartments = $apartmentRepository->findActiveApartments();
 
-        return $this->render('ApartmentBundle::index.html.twig', compact('apartments'));
+        return $this->render('ApartmentBundle::index.html.twig', ['apartments' => $apartments]);
     }
 
     /**
      * @Route("/view/{id}", name="view", requirements={"id": "\d+"})
+     * @Method({"GET"})
+     *
+     * @param int $id
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function viewAction(Request $request, int $id)
     {
@@ -45,6 +56,7 @@ class DefaultController extends Controller
 
     /**
      * @Route("/create", name="create")
+     * @Method({"GET", "POST"})
      *
      * @param Request       $request
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
@@ -59,8 +71,8 @@ class DefaultController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
 
             $apartment = $form->getData();
-            $apartment->setStatus(true);
-            $apartment->setPostedAt(new Datetime());
+            $apartment->setMoveInDate(new \DateTime($form->get('moveInDate')->getData()));
+            $apartment->setPostedAt(new \Datetime());
             $apartment->setSecurityToken($apartment->generateToken());
 
             $em = $this->getDoctrine()->getManager();
@@ -77,13 +89,12 @@ class DefaultController extends Controller
             return $this->redirectToRoute('view', ['id' => $apartment->getId()]);
         }
 
-        return $this->render('ApartmentBundle::create.html.twig', array(
-            'form' => $form->createView(),
-        ));
+        return $this->render('ApartmentBundle::create.html.twig', ['form' => $form->createView()]);
     }
 
     /**
      * @Route("/edit/{id}", name="edit", requirements={"id": "\d+"})
+     * @Method({"GET", "POST"})
      *
      * @param Request $request
      * @param int     $id
@@ -101,7 +112,8 @@ class DefaultController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
 
             $apartment = $form->getData();
-            $apartment->setEditedAt(new Datetime());
+            $apartment->setMoveInDate(new \DateTime($form->get('moveInDate')->getData()));
+            $apartment->setEditedAt(new \Datetime());
 
             $em = $this->getDoctrine()->getManager();
             $em->persist($apartment);
@@ -117,13 +129,15 @@ class DefaultController extends Controller
             return $this->redirectToRoute('view', ['id' => $id]);
         }
 
-        return $this->render('ApartmentBundle::edit.html.twig', array(
-            'form' => $form->createView(), 'apartment' => $apartment
-        ));
+        return $this->render('ApartmentBundle::edit.html.twig', [
+            'form' => $form->createView(),
+            'apartment' => $apartment
+        ]);
     }
 
     /**
      * @Route("/delete/{id}", name="delete", requirements={"id": "\d+"})
+     * @Method({"GET"})
      *
      * @param Request $request
      * @param int     $id
@@ -134,11 +148,9 @@ class DefaultController extends Controller
         $givenToken = strval($request->get('secret'));
 
         $apartment = $this->getApartment($id, $givenToken);
-        $apartment->setEditedAt(new Datetime());
-        $apartment->setStatus(false);
 
         $em = $this->getDoctrine()->getManager();
-        $em->persist($apartment);
+        $em->remove($apartment);
         $em->flush();
 
         $this->sendMessage($apartment, 'deleted');
@@ -218,9 +230,6 @@ class DefaultController extends Controller
             throw new AccessDeniedHttpException('You should use special link from email message for access to this page.');
         }
 
-        if ($apartment->getStatus() === false) {
-            throw new AccessDeniedHttpException('This apartment has been deleted from site.');
-        }
         return $apartment;
     }
 }

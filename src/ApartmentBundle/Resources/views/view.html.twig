@@ -1,4 +1,4 @@
-{% extends "ApartmentBundle::base.html.twig" %}
+{% extends "::base.html.twig" %}
 
 {% block title %}Apartment in {{ apartment.street }}, {{ apartment.town }}, {{ apartment.country }}{% endblock %}
 
@@ -25,13 +25,10 @@
             <dd>{{ apartment.postcode }}</dd>
 
             <dt>Contact email</dt>
-            <dd><a href="mailto:{{ apartment.email }}">
-                    <span class="glyphicon glyphicon-envelope"></span>
-                    {{ apartment.email }}</a></dd>
+            <dd><a href="mailto:{{ apartment.email }}">{{ apartment.email }}</a></dd>
 
             <dt>Map</dt>
             <dd><a href="https://www.google.com/maps/search/{{ apartment.street }},{{ apartment.town}},{{ apartment.country }},{{ apartment.postcode }}" target="_blank">
-                    <span class="glyphicon glyphicon-map-marker"></span>
                     {{ apartment.street }}, {{ apartment.town}}, {{ apartment.country }}, {{ apartment.postcode }}
                 </a></dd>
         </dl>

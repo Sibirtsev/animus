@@ -17,7 +17,6 @@ This project was built for animus.de
 | country | string | 255 | Country of apartment |
 | contact e-mail | email | 255 | Contact email |
 | security token | string | 32 | Authorization token for edit or delete entity |
-| published | boolean | 1 | Publication status |
 | posted at | datetime | - |  Date and time when entity was created |
 | edited at | datetime | - | Date and time when entity was edited last time or deleted |
 
@@ -27,7 +26,7 @@ composer install
 yarn install
 ```
 
-## Build frontend
+## Build frontend for demo app
 ```bash
 yarn run encore dev
 yarn run encore dev --watch
@@ -39,19 +38,24 @@ yarn run encore production
 php bin/console server:start
 ```
 
+## Debug sending emails
+```bash
+python -m smtpd -n -c DebuggingServer localhost:1025
+```
+
 ## ToDo
 - [x] Build sckeleton for application
 - [x] Build apartment entity 
 - [x] Build simple controllers 
 - [ ] Image upload
-- [ ] Custom validation for some fields (eg. email)
+- [x] Custom validation for some fields (eg. email)
 - [ ] Custom error pages
 - [ ] Pagination for apartments list
 - [ ] Add shell scripts for automatic build and run application
 - [ ] Add Makefile
 - [ ] README.md
 - [ ] Extract symfony service from controller
-- [ ] RESTapi
+- [x] RESTapi
 - [ ] Unit tests
 - [ ] Migrations
 - [ ] Create react.js app

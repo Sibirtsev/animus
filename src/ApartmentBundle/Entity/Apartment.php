@@ -3,6 +3,9 @@
 namespace ApartmentBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
+
 
 /**
  * Apartment
@@ -18,47 +21,61 @@ class Apartment
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
+     * @Groups({"apartment"})
      */
     private $id;
 
     /**
      * @var \DateTime
-     *
+     * @Assert\NotBlank()
+     * @Assert\Date()
+     * @Groups({"apartment"})
      * @ORM\Column(name="move_in_date", type="date")
      */
     private $moveInDate;
 
     /**
      * @var string
-     *
+     * @Assert\NotBlank()
+     * @Groups({"apartment"})
      * @ORM\Column(name="street", type="string", length=255)
      */
     private $street;
 
     /**
      * @var string
-     *
+     * @Assert\NotBlank()
+     * @Assert\Regex(
+     *     pattern="/\d{3,10}/",
+     *     match=true,
+     *     message="Postal code should contain from 3 to 10 numbers. See https://en.wikipedia.org/wiki/Postal_code"
+     * )
+     * @Groups({"apartment"})
      * @ORM\Column(name="post_code", type="string", length=10)
      */
     private $postCode;
 
     /**
      * @var string
-     *
+     * @Assert\NotBlank()
+     * @Groups({"apartment"})
      * @ORM\Column(name="town", type="string", length=255)
      */
     private $town;
 
     /**
      * @var string
-     *
+     * @Assert\NotBlank()
+     * @Groups({"apartment"})
      * @ORM\Column(name="country", type="string", length=255)
      */
     private $country;
 
     /**
      * @var string
-     *
+     * @Assert\NotBlank()
+     * @Assert\Email()
+     * @Groups({"apartment"})
      * @ORM\Column(name="email", type="string", length=255)
      */
     private $email;
@@ -71,22 +88,15 @@ class Apartment
     private $securityToken;
 
     /**
-     * @var bool
-     *
-     * @ORM\Column(name="status", type="boolean")
-     */
-    private $status;
-
-    /**
      * @var \DateTime
-     *
+     * @Groups({"apartment"})
      * @ORM\Column(name="posted_at", type="datetime")
      */
     private $postedAt;
 
     /**
      * @var \DateTime
-     *
+     * @Groups({"apartment"})
      * @ORM\Column(name="edited_at", type="datetime")
      */
     private $editedAt;
@@ -268,30 +278,6 @@ class Apartment
     public function getSecurityToken()
     {
         return $this->securityToken;
-    }
-
-    /**
-     * Set status
-     *
-     * @param boolean $status
-     *
-     * @return Apartment
-     */
-    public function setStatus($status)
-    {
-        $this->status = $status;
-
-        return $this;
-    }
-
-    /**
-     * Get status
-     *
-     * @return bool
-     */
-    public function getStatus()
-    {
-        return $this->status;
     }
 
     /**
