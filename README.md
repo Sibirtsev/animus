@@ -50,7 +50,7 @@ python -m smtpd -n -c DebuggingServer localhost:1025
 - [ ] Image upload
 - [x] Custom validation for some fields (eg. email)
 - [ ] Custom error pages
-- [ ] Pagination for apartments list
+- [x] Pagination for apartments list
 - [ ] Add shell scripts for automatic build and run application
 - [ ] Add Makefile
 - [ ] README.md
@@ -58,7 +58,7 @@ python -m smtpd -n -c DebuggingServer localhost:1025
 - [x] RESTapi
 - [ ] Unit tests
 - [ ] Migrations
-- [ ] Create react.js app
+- [x] Create vue.js app (https://github.com/Sibirtsev/animus_fe)
 - [ ] Nginx
 - [ ] Dockerize app
 - [ ] Docker compose

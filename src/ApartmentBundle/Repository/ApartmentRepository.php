@@ -11,7 +11,7 @@ namespace ApartmentBundle\Repository;
  */
 class ApartmentRepository extends \Doctrine\ORM\EntityRepository
 {
-    public function findActiveApartments()
+    public function getList(int $limit = 10, int $offset = 0)
     {
         $em = $this->getEntityManager();
         $qb = $em->createQueryBuilder();
@@ -19,8 +19,22 @@ class ApartmentRepository extends \Doctrine\ORM\EntityRepository
         $q  = $qb->select(['ap'])
             ->from('ApartmentBundle:Apartment', 'ap')
             ->orderBy('ap.postedAt', 'DESC')
+            ->setFirstResult($offset)
+            ->setMaxResults($limit)
             ->getQuery();
 
         return $q->getResult();
+    }
+
+    public function getTotal()
+    {
+        $em = $this->getEntityManager();
+        $qb = $em->createQueryBuilder();
+
+        $q  = $qb->select('COUNT(ap)')
+            ->from('ApartmentBundle:Apartment', 'ap')
+            ->getQuery();
+
+        return intval($q->getSingleScalarResult());
     }
 }

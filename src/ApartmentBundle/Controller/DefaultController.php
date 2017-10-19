@@ -22,17 +22,31 @@ use ApartmentBundle\Form\ApartmentType;
 class DefaultController extends Controller
 {
     /**
+     * Number apartments per page
+     */
+    const LIMIT = 10;
+
+    /**
      * @Route("/", name="list")
      * @Method({"GET"})
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
-        $apartmentRepository = $this->getDoctrine()->getRepository(Apartment::class);
-        $apartments = $apartmentRepository->findActiveApartments();
+        $page = abs(intval($request->query->get('page', 1)));
+        $offset = ($page - 1) * self::LIMIT;
 
-        return $this->render('ApartmentBundle::index.html.twig', ['apartments' => $apartments]);
+        $apartmentRepository = $this->getDoctrine()->getRepository(Apartment::class);
+        $apartments = $apartmentRepository->getList(self::LIMIT, $offset);
+        $apartmentsCount = $apartmentRepository->getTotal();
+
+        return $this->render('ApartmentBundle::index.html.twig', [
+            'apartments' => $apartments,
+            'apartments_count' => $apartmentsCount,
+            'current_page' => $page,
+            'total_pages' => ceil($apartmentsCount / self::LIMIT),
+        ]);
     }
 
     /**

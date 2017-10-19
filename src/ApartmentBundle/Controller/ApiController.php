@@ -16,9 +16,15 @@ use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use ApartmentBundle\Entity\Apartment;
 
 use ApartmentBundle\Exception\PermissionException;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class ApiController extends FOSRestController
 {
+    /**
+     * Default limit for apartments list
+     */
+    const LIMIT = 10;
+
     /**
      * Get a collections of Apartments.
      *
@@ -29,14 +35,58 @@ class ApiController extends FOSRestController
      * )
      * @View(serializerGroups={"apartment"})
      */
-    public function listAction()
+    public function listAction(Request $request)
     {
+        $page = abs(intval($request->query->get('page', 1)));
+        $limit = abs(intval($request->query->get('limit', self::LIMIT)));
+
+        $offset = ($page - 1) * $limit;
+
         $apartmentRepository = $this->getDoctrine()->getRepository(Apartment::class);
-        $apartments = $apartmentRepository->findActiveApartments();
+        $apartments = $apartmentRepository->getList($limit, $offset);
+
         if ($apartments === null) {
             return new ResponseView("there are no users exist", Response::HTTP_NOT_FOUND);
         }
-        return $apartments;
+
+        $apartmentsCount = $apartmentRepository->getTotal();
+
+        $lastPage = ceil($apartmentsCount / $limit);
+
+        $nextPageUrl = null;
+        $prevPageUrl = null;
+
+        if ($page < $lastPage) {
+            $nextPageUrl = $this->generateUrl(
+                'api_list',
+                ['page' => $page + 1],
+                UrlGeneratorInterface::ABSOLUTE_URL
+            );
+        }
+
+        if ($page > 1) {
+            $prevPageUrl = $this->generateUrl(
+                'api_list',
+                ['page' => $page - 1],
+                UrlGeneratorInterface::ABSOLUTE_URL
+            );
+        }
+
+        $result = [
+            'meta' => [
+                'limit' => $limit,
+                'offset' => $offset,
+                'total' => $apartmentsCount,
+                'current_page' => $page,
+                'next_page_url' => $nextPageUrl,
+                'prev_page_url' => $prevPageUrl,
+                'last_page' => $lastPage,
+
+            ],
+            'apartments' => $apartments
+        ];
+
+        return $result;
     }
 
     /**

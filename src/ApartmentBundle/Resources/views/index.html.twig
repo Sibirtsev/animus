@@ -29,4 +29,15 @@
             </div>
         {% endfor %}
     </div>
+
+    <div class="pagination">
+    {% if (current_page > 1) %}
+        <a href="{{ path('list', {'page': (current_page - 1) }) }}" class="btn btn-default btn-sm">&larr;&nbsp;Backward</a>
+    {% endif %}
+
+    {% if (total_pages > current_page) %}
+        <a href="{{ path('list', {'page': (current_page + 1) }) }}" class="btn btn-default btn-sm">Forward&nbsp;&rarr;</a>
+    {% endif %}
+    </div>
+
 {% endblock %}
