@@ -46,7 +46,7 @@ class ApiController extends FOSRestController
         $apartments = $apartmentRepository->getList($limit, $offset);
 
         if ($apartments === null) {
-            return new ResponseView("there are no users exist", Response::HTTP_NOT_FOUND);
+            return new ResponseView(['errors' => ['Apartments not found']], Response::HTTP_NOT_FOUND);
         }
 
         $apartmentsCount = $apartmentRepository->getTotal();
@@ -104,7 +104,10 @@ class ApiController extends FOSRestController
         $apartment = $repository->find($id);
 
         if (!$apartment) {
-            return new ResponseView("there are no users exist", Response::HTTP_NOT_FOUND);
+            return new ResponseView(
+                ['errors' => ['Apartment with id #' . strval($id) . ' not found.']],
+                Response::HTTP_NOT_FOUND
+            );
         }
 
         return $apartment;
@@ -210,10 +213,12 @@ class ApiController extends FOSRestController
      */
     protected function sendMessage(Apartment $apartment, $messageType = 'created')
     {
+        $frontendUrl = 'http://localhost:8080';
+
         $templateMapping = [
-            'created' => 'ApartmentBundle:emails:created.html.twig',
-            'edited' => 'ApartmentBundle:emails:edited.html.twig',
-            'deleted' => 'ApartmentBundle:emails:deleted.html.twig',
+            'created' => 'ApartmentBundle:emails_api:created.html.twig',
+            'edited' => 'ApartmentBundle:emails_api:edited.html.twig',
+            'deleted' => 'ApartmentBundle:emails_api:deleted.html.twig',
         ];
 
         $topicsMapping = [
@@ -233,7 +238,10 @@ class ApiController extends FOSRestController
             ->setBody(
                 $this->renderView(
                     $templateMapping[$messageType],
-                    ['apartment' => $apartment]
+                    [
+                        'apartment' => $apartment,
+                        'url' => $frontendUrl
+                    ]
                 ),
                 'text/html'
             );
