@@ -47,18 +47,18 @@ python -m smtpd -n -c DebuggingServer localhost:1025
 - [x] Build sckeleton for application
 - [x] Build apartment entity 
 - [x] Build simple controllers 
-- [ ] Image upload
 - [x] Custom validation for some fields (eg. email)
-- [ ] Custom error pages
 - [x] Pagination for apartments list
-- [ ] Add shell scripts for automatic build and run application
-- [ ] Add Makefile
-- [ ] README.md
-- [ ] Extract symfony service from controller
 - [x] RESTapi
-- [ ] Unit tests
-- [ ] Migrations
 - [x] Create vue.js app (https://github.com/Sibirtsev/animus_fe)
+- [x] Add Makefile
+- [ ] README.md
+- [ ] Add shell scripts for automatic build and run application
+- [ ] Migrations
+- [ ] Image upload
+- [ ] Custom error pages
+- [ ] Extract symfony service from controller
+- [ ] Unit tests
 - [ ] Nginx
 - [ ] Dockerize app
 - [ ] Docker compose
