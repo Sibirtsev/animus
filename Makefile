@@ -1,7 +1,8 @@
 SYMFONY_CLI=php bin/console
 COMPOSER_CLI=php ./composer.phar
+YARN_CLI=yarn run encore
 
-.PHONY: all install install-fe start stop clean composer-install composer-update doctrine-create build-fe-dev build-fe-prod smtp-debug
+.PHONY: all install install-fe start stop clean composer-install composer-update doctrine-create build-fe-dev build-fe-prod smtp-debug-start
 
 all:
 	install
@@ -13,12 +14,11 @@ install:
 install-fe:
 	yarn install
 
-start:
-	$(SYMFONY_CLI) server:start
-	smpt-debug
+start: smtp-debug-start
+	./bin/start.sh
 
-stop:
-	$(SYMFONY_CLI) server:stop
+stop: smtp-debug-stop
+	./bin/stop.sh
 
 clean:
 	$(SYMFONY_CLI) cache:clear
@@ -33,10 +33,13 @@ doctrine-create:
 	$(SYMFONY_CLI) doctrine:database:create --force
 
 build-fe-dev:
-	yarn run encore dev
+	$(YARN_CLI) dev
 
 build-fe-prod:
-	yarn run encore production
+	$(YARN_CLI) production
 
-smtp-debug:
-	python -m smtpd -n -c DebuggingServer localhost:1025
+smtp-debug-start:
+	./bin/start_mail.sh
+
+smtp-debug-stop:
+	./bin/stop_mail.sh
