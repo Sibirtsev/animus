@@ -69,6 +69,22 @@ Controller for testing with backend php rendering.
 |  edit        | GET,POST    | /apartment/edit/{id}   | Form for edit exists apartment by id. Required secret code in query string |
 |  delete      | GET         | /apartment/delete/{id} | Location for deleting exists apartment by id. Required secret code in query string |
 
+## Screenshots
+### Main page
+![Welcome page](screens/welcome.png)
+
+### List
+![Apartments list](screens/list.png)
+
+### Edit form
+![Edit page](screens/edit.png)
+
+### Api Documentation
+![Api documentation](screens/api_doc.png)
+
+### Response in Postman
+![Api response](screens/api_response.png)
+
 ## ToDo
 - [x] Build skeleton for application
 - [x] Build apartment entity 
