@@ -96,7 +96,7 @@ Controller for testing with backend php rendering.
 - [x] Add Makefile
 - [x] Add shell scripts for start and stop application
 - [x] README.md
-- [ ] Migrations
+- [x] Migrations
 - [ ] Image upload
 - [ ] Custom error pages
 - [ ] Extract symfony service from controller

@@ -121,3 +121,11 @@ jms_serializer:
         auto_detection: true
 
 nelmio_api_doc: ~
+
+# Doctrine Migrations
+doctrine_migrations:
+    dir_name: "%kernel.root_dir%/DoctrineMigrations"
+    namespace: Application\Migrations
+    table_name: migration_versions
+    name: Application Migrations
+    organize_migrations: false
